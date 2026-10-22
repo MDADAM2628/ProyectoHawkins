@@ -18,9 +18,9 @@ public class Main {
         System.out.print("Introduzca su nombre de operario: ");
         operadorActual = sc.nextLine();
 
-        mostrarEncabezado(sc, operadorActual, opcionMenu);
+        mostrarEncabezado(sc, operadorActual, opcionMenu, LIMITE_RIESGO);
     }
-    public static void mostrarEncabezado(Scanner sc, String operadorActual, int opcionMenu){
+    public static void mostrarEncabezado(Scanner sc, String operadorActual, int opcionMenu, int LIMITE_RIESGO){
         do {
             System.out.println("Hola, " + operadorActual + "!");
             System.out.println("---SISTEMA HAWKINS---");
@@ -30,7 +30,17 @@ public class Main {
             opcionMenu = sc.nextInt();
             switch (opcionMenu){
                 case 1:
-                    leerLecturaSegura(sc,);
+                    leerLecturaSegura(sc, "operador");
+                    break;
+                case 2:
+                    simularMuestreoContinuo(sc, LIMITE_RIESGO);
+                    break;
+                case 0:
+                    System.out.println("Cerrando sesión...");
+                    break;
+                default:
+                    System.out.println("Opcion no valida!");
+                    break;
             }
         }while(opcionMenu != 0);
     }
@@ -38,5 +48,9 @@ public class Main {
     public static double leerLecturaSegura(Scanner sc, String operador){
 
         return 0;
+    }
+
+    public static void simularMuestreoContinuo(Scanner sc, int LIMITE_RIESGO){
+
     }
 }
