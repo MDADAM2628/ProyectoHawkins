@@ -1,7 +1,7 @@
 package programacion.ud2;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.zip.DeflaterOutputStream;
 
 public class Main {
     static void main() {
@@ -9,18 +9,18 @@ public class Main {
         final int MAX_ENERGIA = 200;
         final int LIMITE_RIESGO = 150;
         String operadorActual;
-        double sensorMedido;
+        double sensorMedido = 0;
         int codigoRiesgo;
         int porcetajeEstado;
         boolean portalAbierto;
-        int opcionMenu = 3;
+        int opcionMenu = 67;
 
         System.out.print("Introduzca su nombre de operario: ");
         operadorActual = sc.nextLine();
 
-        mostrarEncabezado(sc, operadorActual, opcionMenu, LIMITE_RIESGO);
+        mostrarEncabezado(sc, operadorActual, opcionMenu, LIMITE_RIESGO, sensorMedido);
     }
-    public static void mostrarEncabezado(Scanner sc, String operadorActual, int opcionMenu, int LIMITE_RIESGO){
+    public static void mostrarEncabezado(Scanner sc, String operadorActual, int opcionMenu, int LIMITE_RIESGO, double sensorMedido){
         do {
             System.out.println("Hola, " + operadorActual + "!");
             System.out.println("---SISTEMA HAWKINS---");
@@ -30,7 +30,7 @@ public class Main {
             opcionMenu = sc.nextInt();
             switch (opcionMenu){
                 case 1:
-                    leerLecturaSegura(sc, "operador");
+                    sensorMedido = leerLecturaSegura(sc, "Introduzca el valor de radiación: ");
                     break;
                 case 2:
                     simularMuestreoContinuo(sc, LIMITE_RIESGO);
@@ -45,9 +45,16 @@ public class Main {
         }while(opcionMenu != 0);
     }
 
-    public static double leerLecturaSegura(Scanner sc, String operador){
-
-        return 0;
+    public static double leerLecturaSegura(Scanner sc, String mensaje){
+        double valor = 0;
+        try {
+            System.out.println(mensaje);
+            valor = sc.nextDouble();
+        }catch (InputMismatchException e){
+            System.out.println("Porfavor, introduzca un valor valido de µT.");
+            sc.next();
+        }
+        return valor;
     }
 
     public static void simularMuestreoContinuo(Scanner sc, int LIMITE_RIESGO){
