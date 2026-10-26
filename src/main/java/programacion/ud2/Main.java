@@ -1,5 +1,7 @@
 package programacion.ud2;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -10,7 +12,7 @@ public class Main {
         final int LIMITE_RIESGO = 150;
         String operadorActual;
         double sensorMedido = 0;
-        int codigoRiesgo;
+        int codigoRiesgo = 0;
         int porcetajeEstado;
         boolean portalAbierto;
         int opcionMenu = 67;
@@ -18,9 +20,9 @@ public class Main {
         System.out.print("Introduzca su nombre de operario: ");
         operadorActual = sc.nextLine();
 
-        mostrarEncabezado(sc, operadorActual, opcionMenu, LIMITE_RIESGO, sensorMedido);
+        mostrarEncabezado(sc, operadorActual, opcionMenu, LIMITE_RIESGO, sensorMedido, codigoRiesgo);
     }
-    public static void mostrarEncabezado(Scanner sc, String operadorActual, int opcionMenu, int LIMITE_RIESGO, double sensorMedido){
+    public static void mostrarEncabezado(Scanner sc, String operadorActual, int opcionMenu, int LIMITE_RIESGO, double sensorMedido, int codigoRiesgo){
         do {
             System.out.println("Hola, " + operadorActual + "!");
             System.out.println("---SISTEMA HAWKINS---");
@@ -30,10 +32,11 @@ public class Main {
             opcionMenu = sc.nextInt();
             switch (opcionMenu){
                 case 1:
-                    sensorMedido = leerLecturaSegura(sc, "Introduzca el valor de radiación: ");
+                    leerLecturaSegura(sc, "Introduzca el valor de radiación: ", sensorMedido);
+                    evaluarNivelRiesgo(sc, codigoRiesgo, sensorMedido);
                     break;
                 case 2:
-                    simularMuestreoContinuo(sc, LIMITE_RIESGO);
+                    simularMuestreoContinuo();
                     break;
                 case 0:
                     System.out.println("Cerrando sesión...");
@@ -45,19 +48,33 @@ public class Main {
         }while(opcionMenu != 0);
     }
 
-    public static double leerLecturaSegura(Scanner sc, String mensaje){
-        double valor = 0;
-        try {
-            System.out.println(mensaje);
-            valor = sc.nextDouble();
-        }catch (InputMismatchException e){
-            System.out.println("Porfavor, introduzca un valor valido de µT.");
-            sc.next();
+    public static double leerLecturaSegura(Scanner sc, String mensaje, double sensorMedido){
+        boolean valorValido = false;
+        while(!valorValido) {
+            try {
+                System.out.println(mensaje);
+                sensorMedido = sc.nextDouble();
+                valorValido = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Porfavor, introduzca un valor valido de µT.");
+                sc.next();
+            }
         }
-        return valor;
+        return sensorMedido;
     }
 
-    public static void simularMuestreoContinuo(Scanner sc, int LIMITE_RIESGO){
+    public static void evaluarNivelRiesgo(Scanner sc, int codigoRiesgo, double sensorMedido){
+        int nivelRiesgo = 0;
+        if(sensorMedido < 50){
+            nivelRiesgo = 1;
+        }else if(sensorMedido > 50 && sensorMedido <= 150){
+            nivelRiesgo = 2;
+        }else if (sensorMedido > 150){
+            nivelRiesgo = 3;
+        }
+        System.out.println((nivelRiesgo == 3 ? "Riesgo" : nivelRiesgo == 1 ? "Estable" : "Alerta"));
+    }
+    public static void simularMuestreoContinuo(){
 
     }
 }
