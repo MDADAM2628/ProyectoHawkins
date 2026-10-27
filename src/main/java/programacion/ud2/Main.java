@@ -1,5 +1,7 @@
 package programacion.ud2;
 
+import com.sun.security.jgss.GSSUtil;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -29,7 +31,7 @@ public class Main {
                     portalAbierto = ejecutarProtocoloAccion(codigoRiesgo);
                     break;
                 case 2:
-                    simularMuestreoContinuo();
+                    simularMuestreoContinuo(sc, LIMITE_RIESGO, mensaje, sensorMedido);
                     break;
                 case 0:
                     System.out.println("Cerrando sesión...");
@@ -86,7 +88,7 @@ public class Main {
         }
 
         public static boolean ejecutarProtocoloAccion(int codigoRiesgo){
-            boolean estado = false;
+            boolean estado;
             switch(codigoRiesgo){
                 case 1:
                     System.out.println("Modo estable.");
@@ -107,7 +109,27 @@ public class Main {
             return estado;
         }
 
-        public static void simularMuestreoContinuo() {
-            
+        public static void simularMuestreoContinuo(Scanner sc, int LIMITE_RIESGO, String mensaje, double sensorMedido) {
+            boolean bucle = true;
+            double mediaInput = 0;
+            int contador = 0;
+            do{
+                sensorMedido = leerLecturaSegura(sc, mensaje, sensorMedido);
+                if (sensorMedido < 0){
+                    System.out.println("Nuemro negativo, saliendo del menú.");
+                    bucle = false;
+                }else if(sensorMedido == 0){
+                    continue;
+                }
+                else if(sensorMedido > 0 && sensorMedido <= LIMITE_RIESGO){
+                    mediaInput = sensorMedido + mediaInput;
+                    contador = contador + 1;
+                }else if(sensorMedido > LIMITE_RIESGO){
+                    System.out.println("Umbral superado!");
+                    bucle = false;
+                }
+            }while(bucle);
+            mediaInput = mediaInput/contador;
+            System.out.printf("%s %6.2f %n","La media de umbral es: ", mediaInput);
         }
 }
