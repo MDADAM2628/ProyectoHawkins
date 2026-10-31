@@ -1,11 +1,8 @@
 package programacion.ud2;
-
-import com.sun.security.jgss.GSSUtil;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Main {
+public class ProyectoHawkings {
     static void main() {
         Scanner sc = new Scanner(System.in);
         final int MAX_ENERGIA = 200;
@@ -45,11 +42,7 @@ public class Main {
 
     }
         public static void mostrarEncabezado (String operadorActual, int opcionMenu){
-                System.out.println("Hola, " + operadorActual + "!");
-                System.out.println("---SISTEMA HAWKINS---");
-                System.out.println("1. Inspeccionar Sensor Individual");
-                System.out.println("2. Iniciar Muestreo Continuo");
-                System.out.println("0. Salir de la Consola");
+            System.out.printf("Hola %s! %n---SISTEMA HAWKINS---%n1. Inspeccionar Sensor Individual%n2. Iniciar Muestreo Continuo%n0. Salir de la Consola%n", operadorActual);
         }
 
         public static double leerLecturaSegura (Scanner sc, String mensaje, double sensorMedido){
@@ -113,6 +106,7 @@ public class Main {
             boolean bucle = true;
             double mediaInput = 0;
             int contador = 0;
+            System.out.println("Introduzca un valor negativo para salir.");
             do{
                 sensorMedido = leerLecturaSegura(sc, mensaje, sensorMedido);
                 if (sensorMedido < 0){
